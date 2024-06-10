@@ -1,0 +1,44 @@
+_format_version: "1.1"
+services:
+  - name: user-service
+    url: http://user-service:3000
+    routes:
+      - name: user-service-route
+        paths:
+          - /users
+  - name: client-service
+    url: http://client-service:3000
+    routes:
+      - name: client-service-route
+        paths:
+          - /clients
+  - name: delivery-service
+    url: http://delivery-service:3000
+    routes:
+      - name: delivery-service-route
+        paths:
+          - /deliveries
+  - name: restaurant-service
+    url: http://restaurant-service:3000
+    routes:
+      - name: restaurant-service-route
+        paths:
+          - /restaurants
+  - name: commercial-service
+    url: http://commercial-service:3000
+    routes:
+      - name: commercial-service-route
+        paths:
+          - /commercials
+  - name: technical-service
+    url: http://technical-service:3000
+    routes:
+      - name: technical-service-route
+        paths:
+          - /technicals
+  - name: sales-service
+    url: http://sales-service:3000
+    routes:
+      - name: sales-service-route
+        paths:
+          - /sales
