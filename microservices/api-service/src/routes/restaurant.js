@@ -1,58 +1,58 @@
 const express = require("express");
-const Admin = require("../classes/AdminClass");
+const Restaurant = require("../classes/RestaurantClass");
 const router = express.Router();
 
-// Create an admin
+// Create an restaurant
 router.post("/", async (req, res) => {
   try {
-    const admin = req.body;
-    const newAdmin = await Admin.create(admin);
-    res.status(201).send(newAdmin);
+    const restaurant = req.body;
+    const newRestaurant = await Restaurant.create(restaurant);
+    res.status(201).send(newRestaurant);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-// Update an admin
+// Update an restaurant
 router.put("/:id", async (req, res) => {
   try {
-    const admin = req.body;
+    const restaurant = req.body;
     const _id = req.params.id;
 
-    const result = await Admin.update(_id, admin);
+    const result = await Restaurant.update(_id, restaurant);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-// Delete an admin
+// Delete an restaurant
 router.delete("/:id", async (req, res) => {
   try {
-    const admin = req.params.id;
-    const newAdmin = await Admin.remove(admin);
-    res.status(200).send(newAdmin);
+    const restaurant = req.params.id;
+    const newRestaurant = await Restaurant.remove(restaurant);
+    res.status(200).send(newRestaurant);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-// Find an admin
+// Find an restaurant
 router.get("/", async (req, res) => {
   try {
-    const newAdmin = await Admin.find();
-    res.status(200).send(newAdmin);
+    const newRestaurant = await Restaurant.find();
+    res.status(200).send(newRestaurant);
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-// Find an admin by id
+// Find an restaurant by id
 router.get("/find/:id", async (req, res) => {
   try {
     const { _id } = req.params;
-    const newAdmin = await Admin.findById(_id);
-    res.status(200).send(newAdmin);
+    const newRestaurant = await Restaurant.findById(_id);
+    res.status(200).send(newRestaurant);
   } catch (error) {
     res.status(500).send(error);
   }

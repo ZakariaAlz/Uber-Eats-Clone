@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 
 const db = require("./src/SQLmodels");
 
-
+app.use(express.json());
 
 app.use(apiKeyMiddleware);
 
@@ -35,23 +35,24 @@ db.sequelize.sync()
 .catch(err => console.log(err));
 
 const services = [
-    { path: '/client-service', target: 'http://localhost:5001' },
-    { path: '/delivery-service', target: 'http://localhost:5002' },
-    { path: '/restaurateur-service', target: 'http://localhost:5003' },
-    { path: '/sales-service', target: 'http://localhost:5004' },
-    { path: '/technical-service', target: 'http://localhost:5005' },
-    { path: '/developper-service', target: 'http://localhost:5006' },
-    { path: '/auth-service', target: 'http://localhost:5007' }
+    { path: '/client-service/api    ', target: 'http://localhost:5001' },
+    { path: '/delivery-service/api', target: 'http://localhost:5002' },
+    { path: '/restaurateur-service/api', target: 'http://localhost:5003' },
+    { path: '/sales-service/api', target: 'http://localhost:5004' },
+    { path: '/technical-service/api', target: 'http://localhost:5005' },
+    { path: '/developper-service/api', target: 'http://localhost:5006' },
+    { path: '/auth-service/api', target: 'http://localhost:5007' }
 ];
 const servicesDocker = [
-    { path: '/client-service', target: 'http://client-service-backend:5001' },
-    { path: '/delivery-service', target: 'http://delivery-service-backend:5002' },
-    { path: '/restaurateur-service', target: 'http://restaurateur-service-backend:5003' },
-    { path: '/sales-service', target: 'http://sales-service-backend:5004' },
-    { path: '/technical-service', target: 'http://technical-service-backend:5005' },
-    { path: '/developper-service', target: 'http://developper-service-backend:5006' },
-    { path: '/auth-service', target: 'http://localhost:5007' }
+    { path: '/client-service/api', target: 'http://client-service-backend:5001' },
+    { path: '/delivery-service/api', target: 'http://delivery-service-backend:5002' },
+    { path: '/restaurateur-service/api', target: 'http://restaurateur-service-backend:5003' },
+    { path: '/sales-service/api', target: 'http://sales-service-backend:5004' },
+    { path: '/technical-service/api', target: 'http://technical-service-backend:5005' },
+    { path: '/developper-service/api', target: 'http://developper-service-backend:5006' },
+    { path: '/auth-service/api', target: 'http://localhost:5007' }
 ];
+
 
 // Enable CORS
 app.use(cors({

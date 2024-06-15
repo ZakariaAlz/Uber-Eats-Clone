@@ -44,4 +44,4 @@ class Delivery {
     }
 }
 
-module.exports = Versement
+module.exports = Delivery

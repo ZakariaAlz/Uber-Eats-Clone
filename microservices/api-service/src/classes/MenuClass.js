@@ -39,4 +39,4 @@ class Menu {
     }
 }
 
-module.exports = Pub
+module.exports = Menu

@@ -3,12 +3,14 @@ const express = require("express")
 
 
 const auth = require("./auth")
-const admin = require('./admin')
 const article = require('./article')
 const client = require('./client')
-const cmdarticle = require('./cmdarticle')
-const pub = require('./pub')
-const versement = require('./versement')
+const commande = require('./commande')
+const delivery = require('./delivery')
+const menu = require('./menu')
+const restaurant = require('./restaurant')
+
+
 
 const router = express.Router()
 
@@ -16,12 +18,12 @@ const router = express.Router()
 
 // Apply the auth middleware to all routes except login
 router.use('/auth', auth)
-router.use('/admin', admin)
 router.use('/article', article)
 router.use('/client', client)
-router.use('/cmdarticle', cmdarticle)
-router.use('/pub', pub)
-router.use('/versement', versement)
+router.use('/commande', commande)
+router.use('/delivery', delivery)
+router.use('/menu', menu)
+router.use('/restaurant', restaurant)
 
 
 

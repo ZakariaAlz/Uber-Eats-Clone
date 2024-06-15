@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         role: {
-            type: DataTypes.ENUM('commercial', 'delivery', 'developer', 'enduser', 'restaurateur', 'technical'),
+            type: DataTypes.ENUM('commercial', 'delivery', 'developper', 'client', 'retaurant', 'technical'),
             allowNull: false,
             validate: {
-                isIn: [['commercial', 'delivery', 'developer', 'enduser', 'restaurateur', 'technical']]
+                isIn: [['commercial', 'delivery', 'developper', 'client', 'retaurant', 'technical']]
             }
         },
     }, {
