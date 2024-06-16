@@ -6,16 +6,25 @@ const authMiddleware = require('./src/middleware/authmiddleware'); // Import the
 const bodyParser = require('body-parser');
 const apiKeyMiddleware = require('./src/middleware/api-key');
 require('dotenv').config();
+const router = require('./src/routes');
+
 
 const app = express();
 const db = require("./src/SQLmodels");
 
 app.use(express.json());
-app.use(apiKeyMiddleware);
 
+app.use(apiKeyMiddleware);
+app.use('/api', router);
 
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {console.log('Connected to the database');  })
+  .then(() => {
+    console.log('Connected to the database');
+    // Start the server after successfully connecting to the database
+    app.listen(port, () => {
+      console.log(`Server is listening on port ${port}`);
+    });
+  })
   .catch((error) => {
     console.error('Error connecting to the database:', error);
     process.exit(1);
@@ -33,7 +42,6 @@ const services = [
     { path: '/sales-service', target: 'http://localhost:5004' },
     { path: '/technical-service', target: 'http://localhost:5005' },
     { path: '/developper-service', target: 'http://localhost:5006' },
-    { path: '/auth-service', target: 'http://localhost:5007' }
 ];
 const servicesDocker = [
     { path: '/client-service/api', target: 'http://client-service-backend:5001' },
@@ -42,7 +50,6 @@ const servicesDocker = [
     { path: '/sales-service/api', target: 'http://sales-service-backend:5004' },
     { path: '/technical-service/api', target: 'http://technical-service-backend:5005' },
     { path: '/developper-service/api', target: 'http://developper-service-backend:5006' },
-    { path: '/auth-service/api', target: 'http://localhost:5007' }
 ];
 
 
@@ -109,7 +116,7 @@ services.forEach(service => {
 //     }));
 // });
 
-const PORT = 5000;
+const PORT = 5007;
 app.listen(PORT, () => {
-    console.log(`Gateway running on port ${PORT}`);
+    console.log(`Auth running on port ${PORT}`);
 });
