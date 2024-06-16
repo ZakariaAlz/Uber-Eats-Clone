@@ -1,10 +1,9 @@
-const users = require('../SQLmodels');
+const users = require('../SQLmodels/users');
 const bcrypt = require('bcrypt');
 const ClientSchema = require('../models/ClientModel');
 const DeliverySchema = require('../models/DeliveryModel');
 const RestaurantSchema = require('../models/RestaurantModel');
 const Log = require('../models/LogModel');
-const users = require('../SQLmodels/users');
 
 const saltRounds = 10;
 
@@ -72,7 +71,7 @@ class UserController {
                     },
                     process.env.JWT_SECRET_KEY, // Use an environment variable for the secret key
                 );
-                const log = new Log({ value: `${email} with the role: ${role} has logged in`, type: "authentication"});
+                const log = new Log({ value: `${email} with the role: ${role} has logged in`, type: "authentication" });
                 await log.save();
                 // Send the response
                 res.status(200).json({ message: 'Login successful', accessToken, userInfo: user });
