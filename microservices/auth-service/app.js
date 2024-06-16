@@ -20,10 +20,6 @@ app.use('/api', router);
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to the database');
-    // Start the server after successfully connecting to the database
-    app.listen(port, () => {
-      console.log(`Server is listening on port ${port}`);
-    });
   })
   .catch((error) => {
     console.error('Error connecting to the database:', error);
