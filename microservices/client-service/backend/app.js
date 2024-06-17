@@ -28,6 +28,6 @@ app.use(verifyMicroserviceApiKey);
 
 const PORT = 5001;
 app.listen(PORT, () => {
-    console.log(`Restaurant backend running on port ${PORT}`);
+    console.log(`Client backend running on port ${PORT}`);
 });
 
