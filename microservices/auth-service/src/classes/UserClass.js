@@ -9,6 +9,93 @@ const saltRounds = 10;
 
 class UserController {
 
+    static async findOne(req, res) {
+        try {
+            const user = await users.findByPk(req.params.id);
+            if (user) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).json({ error: 'User not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    static async update(req, res) {
+        try {
+            const { name, email, password, phonenumber, adress, state } = req.body;
+
+            // Hash the password if it's being updated
+            let updatedData = { name, email, password, phonenumber, adress, state };
+            if (password) {
+                updatedData.password = await bcrypt.hash(password, 10);
+            }
+
+            // Update the user in SQL database
+            const [updated] = await users.update(updatedData, { where: { id: req.params.id } });
+            if (updated) {
+                const updatedUser = await users.findByPk(req.params.id);
+
+                // Update the user in MongoDB based on role
+                let mongoUser;
+                switch (updatedUser.role.toLowerCase()) {
+                    case 'client':
+                        mongoUser = await ClientSchema.updateOne({ email }, { $set: updatedData }).exec();
+                        break;
+                    case 'delivery':
+                        mongoUser = await DeliverySchema.updateOne({ email }, { $set: updatedData }).exec();
+                        break;
+                    case 'restaurant':
+                        mongoUser = await RestaurantSchema.updateOne({ email }, { $set: updatedData }).exec();
+                        break;
+                    default:
+                        return res.status(400).json({ error: 'Invalid role specified' });
+                }
+
+                res.status(200).json({ updatedUser, mongoUser });
+            } else {
+                res.status(404).json({ error: 'User not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+
+    static async delete(req, res) {
+        try {
+            // Delete the user in SQL database
+            const deleted = await users.destroy({ where: { id: req.params.id } });
+            if (deleted) {
+                // Extract the role from the URL
+                const role = req.originalUrl.split('/')[1];
+
+                // Delete the user in MongoDB based on role
+                let mongoUser;
+                switch (role.toLowerCase()) {
+                    case 'client':
+                        mongoUser = await ClientSchema.deleteOne({ sqlId: req.params.id }).exec();
+                        break;
+                    case 'delivery':
+                        mongoUser = await DeliverySchema.deleteOne({ sqlId: req.params.id }).exec();
+                        break;
+                    case 'restaurant':
+                        mongoUser = await RestaurantSchema.deleteOne({ sqlId: req.params.id }).exec();
+                        break;
+                    default:
+                        return res.status(400).json({ error: 'Invalid role specified' });
+                }
+
+                res.status(204).json({ message: 'User deleted', mongoUser });
+            } else {
+                res.status(404).json({ error: 'User not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
+
     static async signup(req, res) {
         try {
             const role = req.headers.role; // Extract the role from the URL
