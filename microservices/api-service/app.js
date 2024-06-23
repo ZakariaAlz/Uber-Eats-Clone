@@ -4,14 +4,14 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const authMiddleware = require('./src/middleware/authmiddleware'); // Import the auth middleware
 const bodyParser = require('body-parser');
-const apiKeyMiddleware = require('./src/middleware/api-key');
+// const apiKeyMiddleware = require('./src/middleware/api-key');
 require('dotenv').config();
 
 const app = express();
 const db = require("./src/SQLmodels");
 
 app.use(express.json());
-app.use(apiKeyMiddleware);
+// app.use(apiKeyMiddleware);
 
 
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -48,23 +48,28 @@ const servicesDocker = [
 
 // Enable CORS
 app.use(cors({
-    origin: ['http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'http://localhost:3004', 'http://localhost:3005', 'http://localhost:3006', 'http://localhost:5010'], // Update with your frontend URLs
+    origin: ['http://localhost:3000','http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'http://localhost:3004', 'http://localhost:3005', 'http://localhost:3006', 'http://localhost:5010'], // Update with your frontend URLs
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     allowedHeaders: ['Content-Type', 'authenticated', 'apiKey', 'accessToken', 'role'] // Add 'authenticated' header
 }));
 
 // // // Middleware to parse JSON bodies
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 // API verification middleware
 app.use((req, res, next) => {
-    const apiKey = req.headers.apikey;  // Header keys are case-insensitive, but typically lowercase is used
+    const headers = req.headers;
+    console.log('Received Headers:', headers);  // Log all received headers
+
+    // Retrieve the API key from headers with case-insensitive check
+    const apiKey = headers['apikey'] || headers['ApiKey'] || headers['APIKEY'] || headers['APIKey'];
+    console.log('Received API Key:', apiKey);  // Log the received API key
+
     if (!apiKey) {
         return res.status(401).json({ error: 'API key is missing' });
     }
 
-    // Replace this with your actual API key verification logic
     if (apiKey === process.env.API_KEY) {
         next();
     } else {

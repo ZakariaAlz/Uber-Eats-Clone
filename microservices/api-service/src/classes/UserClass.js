@@ -25,13 +25,13 @@ class UserController {
 
             let createdMongoUser;
             switch (role) {
-                case 'Client':
+                case 'client':
                     createdMongoUser = await ClientSchema.create(mongoUser);
                     break;
-                case 'Delivery':
+                case 'delivery':
                     createdMongoUser = await DeliverySchema.create(mongoUser);
                     break;
-                case 'Restaurant':
+                case 'restaurant':
                     createdMongoUser = await RestaurantSchema.create(mongoUser);
                     break;
                 default:
