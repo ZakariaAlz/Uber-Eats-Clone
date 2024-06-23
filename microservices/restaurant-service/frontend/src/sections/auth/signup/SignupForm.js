@@ -42,13 +42,13 @@ export default function SignupForm() {
             name: Yup.string().required('Na is required'),
             email: Yup.string().email('Invalid email address').required('Email is required'),
             password: Yup.string().required('Password is required'),
-            phone: Yup.number().required('Phone number is required'),
+            phonenumber: Yup.number().required('Phone number is required'),
             adress: Yup.string().required('Address is required'),
         }),
         onSubmit: (values) => {
             const apiKey = process.env.REACT_APP_API_KEY;
             console.log('Using API Key:', apiKey);  // Log the API key
-            axios.post(`${process.env.REACT_APP_AUTH_IP_ADDRESS}/signup`, values, {
+            axios.post(`${process.env.REACT_APP_AUTH_IP_ADDRESS}/user/signup`, values, {
                 headers: {
                     apikey: apiKey,
                     role: process.env.REACT_APP_ROLE
@@ -115,12 +115,12 @@ export default function SignupForm() {
                     />
 
                     <TextField
-                        name="phone"
+                        name="phonenumber"
                         label="Phone"
-                        value={formik.values.phone}
+                        value={formik.values.phonenumber}
                         onChange={formik.handleChange}
-                        error={formik.touched.phone && Boolean(formik.errors.phone)}
-                        helperText={formik.touched.phone && formik.errors.phone}
+                        error={formik.touched.phonenumber && Boolean(formik.errors.phonenumber)}
+                        helperText={formik.touched.phonenumber && formik.errors.phonenumber}
                     />
 
                     <TextField

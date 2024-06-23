@@ -20,24 +20,18 @@ export default function App() {
     isAuthenticated: false,  // True if user is logged in
     userInfo: {
         id: 0,
-        name: '',
         email: '',
-        password: '',
-        phonenumber: '',
-        role: "",
+        role: '',
       }
   });
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_AUTH_IP_ADDRESS}/check`, { headers: { accessToken: localStorage.getItem("accessToken"), apikey: process.env.REACT_APP_API_KEY, role: process.env.REACT_APP_ROLE } }).then((response) => {
+    axios.get(`${process.env.REACT_APP_AUTH_IP_ADDRESS}/user/checkAuth`, { headers: { accessToken: localStorage.getItem("accessToken"), apikey: process.env.REACT_APP_API_KEY, role: process.env.REACT_APP_ROLE } }).then((response) => {
       if (response.data.error) {
         setAuthState({ 
           isAuthenticated: false,
           userInfo: {
             id: 0,
-            name: '',
-            email: '',
-            password: '',
-            phonenumber: '',
+            email: "",
             role: "",
           }
           });
@@ -45,9 +39,7 @@ export default function App() {
         setAuthState({ isAuthenticated: true, 
           userInfo: {
             id: response.data.user.id,
-            name: response.data.user.name,
             email: response.data.user.email,
-            phonenumber: response.data.user.phonenumber,
             role: response.data.user.role
           }  
         });

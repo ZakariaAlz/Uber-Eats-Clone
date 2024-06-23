@@ -1,5 +1,5 @@
 const apiKeyMiddleware = (req, res, next) => {
-    const apiKey = req.headers['api-key'] //Get the API key from the headers
+    const apiKey = req.headers['apikey'] //Get the API key from the headers
 
     // If the API key is missing or incorrect, return an error response
     if (!apiKey || apiKey !== process.env.API_KEY) {

@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const apiKeyMiddleware = require('./src/middleware/api-key');
 require('dotenv').config();
 const router = require('./src/routes');
 const userRoutes = require('./src/routes/user');
@@ -9,13 +10,13 @@ const db = require("./src/SQLmodels");
 const app = express();
 
 // Enable CORS
-app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003', 'http://localhost:3004', 'http://localhost:3005', 'http://localhost:3006', 'http://localhost:5010'], // Update with your frontend URLs
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'apiKey', 'Authorization', 'accessToken' ,'role']
-}));
+app.use(cors());
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// API key verification middleware
+app.use(apiKeyMiddleware);
 
 // MongoDB connection
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -33,10 +34,8 @@ db.sequelize.sync()
   .catch(err => console.log(err));
 
 // Routes
+
 app.use('/api', router);
-app.use('/api/user', userRoutes);
-
-
 
 const PORT = 5007;
 app.listen(PORT, () => {

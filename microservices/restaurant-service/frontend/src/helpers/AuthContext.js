@@ -7,9 +7,6 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: false,  // True if user is logged in
         userInfo: {
             id: 0,
-            first_name: "",
-            last_name: "",
-            phone: "",
             email: "",
             role: ""
           }

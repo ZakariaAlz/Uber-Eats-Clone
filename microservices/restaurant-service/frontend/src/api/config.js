@@ -7,7 +7,7 @@ export const Request = axios.create({
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Method": "DELETE, POST, GET, OPTIONS, PUT",
     "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With",
-    "api-key": "P6APPN48d9tn5pnYkCkv",
+    "apikey": "P6APPN48d9tn5pnYkCkvJshkbzH1Kfn",
     "role":"restaurant",
   }
 })

@@ -1,9 +1,14 @@
-const users = require('../SQLmodels/users');
+const db = require('../SQLmodels')
+const { DataTypes } = require('sequelize');
+
+const users = require('../SQLmodels/users')(db.sequelize, DataTypes);
 const bcrypt = require('bcrypt');
 const ClientSchema = require('../models/ClientModel');
 const DeliverySchema = require('../models/DeliveryModel');
 const RestaurantSchema = require('../models/RestaurantModel');
 const Log = require('../models/LogModel');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 const saltRounds = 10;
 
@@ -98,8 +103,9 @@ class UserController {
 
     static async signup(req, res) {
         try {
-            const role = req.headers.role; // Extract the role from the URL
-            const { name, email, password, phonenumber, adress, referralCodeused } = req.body;
+            const role = req.headers['role']; // Extract the role from the URL
+            console.log(role)
+            const { name, email, password, phonenumber, adress, vehicle, referralCodeused } = req.body;
             const randomHash = crypto.randomBytes(12).toString('base64').slice(0, 12)
 
 
@@ -107,10 +113,12 @@ class UserController {
             const hashedPassword = await bcrypt.hash(password, saltRounds);
 
             // Create the user in SQL database
-            const sqlUser = await users.create({ email, password: hashedPassword, role });
+            const sqlUser = await users.create({ email, password: hashedPassword, role: role });
+
 
             // Create the user in MongoDB based on role
-            const mongoUser = { name, email, phonenumber, adress, referralCodeowned: randomHash, vehicle, referralCodeused: referralCodeused || 'none', password: hashedPassword, sqlId: sqlUser.id, state: 'activated' };
+            const mongoUser = { name, email, phonenumber, adress, referralCodeowned: randomHash, referralCodeused: referralCodeused || 'none', password: hashedPassword, sqlId: sqlUser.id, state: 'activated' };
+            const mongoDelivery = { name, email, phonenumber, vehicle, referralCodeowned: randomHash, referralCodeused: referralCodeused || 'none', password: hashedPassword, sqlId: sqlUser.id, state: 'activated' };
 
             let createdMongoUser;
             switch (role.toLowerCase()) {
@@ -118,7 +126,7 @@ class UserController {
                     createdMongoUser = await ClientSchema.create(mongoUser);
                     break;
                 case 'delivery':
-                    createdMongoUser = await DeliverySchema.create(mongoUser);
+                    createdMongoUser = await DeliverySchema.create(mongoDelivery);
                     break;
                 case 'restaurant':
                     createdMongoUser = await RestaurantSchema.create(mongoUser);
@@ -136,8 +144,9 @@ class UserController {
 
     static async login(req, res) {
         try {
-            const role = req.originalUrl.split('/')[1]; // Extract the role from the URL
+            const role = req.headers['role']; // Extract the role from the URL
             const { email, password } = req.body;
+            console.log(role, email, password)
 
             // Find the user in SQL database
             const user = await users.findOne({
@@ -171,12 +180,11 @@ class UserController {
     }
 
     static checkAuth(req, res) {
-        const role = req.headers.role; // Extract the role from the URL
+        const role = req.headers['role']; // Extract the role from the URL
         const accessToken = req.header("accessToken") // Get accessToken from the accessToken header
         if (!accessToken) {
             return res.status(401).json({ error: 'Access denied. No accessToken provided.' });
         }
-
         try {
             const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
             if (role !== decoded.role) {

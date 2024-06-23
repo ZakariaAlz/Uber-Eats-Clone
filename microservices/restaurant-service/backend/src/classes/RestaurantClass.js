@@ -39,6 +39,11 @@ class Restaurant {
         const t = await RestaurantSchema.findOne({ email: email }).exec()
         return t
     }
+    
+    static async findBySqlid(sqlid) {
+        const t = await RestaurantSchema.findOne({ sqlId: sqlid }).exec()
+        return t
+    }
 
 }
 

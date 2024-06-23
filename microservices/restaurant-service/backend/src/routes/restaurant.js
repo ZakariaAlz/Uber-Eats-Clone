@@ -58,4 +58,24 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
+router.get("/findrestaurantbyemail/:email", async (req, res) => {
+  try {
+      const {email} = req.params
+      const newRestaurant = await Restaurant.findByEmail(email)
+      res.status(200).send(newRestaurant)
+  } catch (error) {
+      res.status(500).send(error)
+  }
+});
+
+router.get("/findrestaurantbysqlid/:sqlid", async (req, res) => {
+  try {
+      const {sqlid} = req.params
+      const newRestaurant = await Restaurant.findBySqlid(sqlid)
+      res.status(200).send(newRestaurant)
+  } catch (error) {
+      res.status(500).send(error)
+  }
+});
+
 module.exports = router;
