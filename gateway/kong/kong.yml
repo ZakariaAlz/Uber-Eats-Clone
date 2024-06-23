@@ -1,0 +1,46 @@
+_format_version: "2.1"
+services:
+  - name: user-service
+    url: http://user-service:3001
+    routes:
+      - name: user-service-route
+        paths:
+          - /users
+  - name: client-service
+    url: http://client-service:3002
+    routes:
+      - name: client-service-route
+        paths:
+          - /clients
+  - name: delivery-service
+    url: http://delivery-service:3003
+    routes:
+      - name: delivery-service-route
+        paths:
+          - /deliveries
+  - name: restaurant-service
+    url: http://restaurant-service:3004
+    routes:
+      - name: restaurant-service-route
+        paths:
+          - /restaurants
+  - name: technical-service
+    url: http://technical-service:3005
+    routes:
+      - name: technical-service-route
+        paths:
+          - /technicals
+  - name: sales-service
+    url: http://sales-service:3006
+    routes:
+      - name: sales-service-route
+        paths:
+          - /sales
+  - name: component-service
+    url: http://component-service:3007
+    routes:
+      - name: component-service-route
+        paths:
+          - /component
+
+

@@ -1,6 +1,11 @@
-FROM nginx:latest 
-COPY nginx.conf /etc/nginx/nginx.conf # Copy custom nginx configuration
+# Use the official Nginx image as the base image
+FROM nginx:latest
 
-# Start nginx
+# Copy the custom Nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 8080
+EXPOSE 8080
+
+# Start Nginx when the container has started
 CMD ["nginx", "-g", "daemon off;"]
-
