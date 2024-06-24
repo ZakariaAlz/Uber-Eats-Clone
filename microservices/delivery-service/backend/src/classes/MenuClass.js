@@ -32,9 +32,9 @@ class Menu {
         return t
     }
 
-    static async findByArticle(article) {
+    static async findByRestaurant(restaurant) {
 
-        const t = await MenuSchema.find({article: article}).sort({ $natural: -1 }).exec()
+        const t = await MenuSchema.find({restaurant: restaurant}).sort({ $natural: -1 }).exec()
         return t
     }
 }

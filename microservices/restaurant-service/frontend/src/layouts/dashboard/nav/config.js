@@ -1,3 +1,5 @@
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import FoodBankIcon from '@mui/icons-material/FoodBank';
 // component
 import SvgColor from '../../../components/svg-color';
 
@@ -13,14 +15,14 @@ const navConfig = [
     protected: true
   },
   {
-    title: 'article',
+    title: 'articles',
     path: '/dashboard/article',
-    icon: icon('ic_admin'),
+    icon: <RestaurantMenuIcon />
   },
   {
-    title: 'menu',
+    title: 'menus',
     path: '/dashboard/menu',
-    icon: icon('ic_user'),
+    icon: <FoodBankIcon />
   },
   {
     title: 'orders',

@@ -72,34 +72,44 @@ class UserController {
         try {
             // Delete the user in SQL database
             const deleted = await users.destroy({ where: { id: req.params.id } });
-            if (deleted) {
-                // Extract the role from the URL
-                const role = req.originalUrl.split('/')[1];
+            const id = req.params.id;
 
-                // Delete the user in MongoDB based on role
+            if (deleted) {
+                // Extract the role from the headers
+                const role = req.headers['role'];
+
+                if (!role) {
+                    return res.status(400).json({ error: 'Role not specified in the headers' });
+                }
+
                 let mongoUser;
                 switch (role.toLowerCase()) {
                     case 'client':
-                        mongoUser = await ClientSchema.deleteOne({ sqlId: req.params.id }).exec();
+                        mongoUser = await ClientSchema.deleteOne({ sqlId: id }).exec();
                         break;
                     case 'delivery':
-                        mongoUser = await DeliverySchema.deleteOne({ sqlId: req.params.id }).exec();
+                        mongoUser = await DeliverySchema.deleteOne({ sqlId: id }).exec();
                         break;
                     case 'restaurant':
-                        mongoUser = await RestaurantSchema.deleteOne({ sqlId: req.params.id }).exec();
+                        mongoUser = await RestaurantSchema.deleteOne({ sqlId: id }).exec();
                         break;
                     default:
                         return res.status(400).json({ error: 'Invalid role specified' });
                 }
 
-                res.status(204).json({ message: 'User deleted', mongoUser });
+                if (mongoUser.deletedCount > 0) {
+                    res.status(204).json({ message: 'User deleted', mongoUser });
+                } else {
+                    res.status(404).json({ error: 'User not found in MongoDB', mongoUser });
+                }
             } else {
-                res.status(404).json({ error: 'User not found' });
+                res.status(404).json({ error: 'User not found in SQL' });
             }
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     }
+
 
     static async signup(req, res) {
         try {
