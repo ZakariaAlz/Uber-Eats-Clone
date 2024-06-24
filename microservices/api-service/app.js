@@ -34,7 +34,7 @@ const services = [
     { path: '/restaurant-service', target: 'http://localhost:5003' },
     { path: '/sales-service', target: 'http://localhost:5004' },
     { path: '/technical-service', target: 'http://localhost:5005' },
-    { path: '/developper-service', target: 'http://localhost:5006' },
+    { path: '/component-service', target: 'http://localhost:5006' },
     { path: '/auth-service', target: 'http://localhost:5007' }
 ];
 const servicesDocker = [
@@ -43,7 +43,7 @@ const servicesDocker = [
     { path: '/restaurateur-service/api', target: 'http://restaurateur-service-backend:5003' },
     { path: '/sales-service/api', target: 'http://sales-service-backend:5004' },
     { path: '/technical-service/api', target: 'http://technical-service-backend:5005' },
-    { path: '/developper-service/api', target: 'http://developper-service-backend:5006' },
+    { path: '/component-service/api', target: 'http://developper-service-backend:5006' },
     { path: '/auth-service/api', target: 'http://localhost:5007' }
 ];
 

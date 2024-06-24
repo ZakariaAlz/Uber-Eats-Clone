@@ -6,6 +6,10 @@ const bcrypt = require('bcrypt');
 const ClientSchema = require('../models/ClientModel');
 const DeliverySchema = require('../models/DeliveryModel');
 const RestaurantSchema = require('../models/RestaurantModel');
+const DeveloperSchema = require('../models/DeveloperModel');
+const SaleSchema = require('../models/SaleModel');
+const TechnicalSchema = require('../models/TechnicalModel');
+
 const Log = require('../models/LogModel');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
@@ -33,8 +37,10 @@ class UserController {
 
             // Hash the password if it's being updated
             let updatedData = { name, email, password, phonenumber, adress, state };
+            let updatedh = { name, email, password, phonenumber };
             if (password) {
                 updatedData.password = await bcrypt.hash(password, 10);
+                updatedh.password = await bcrypt.hash(password, 10);
             }
 
             // Update the user in SQL database
@@ -53,6 +59,15 @@ class UserController {
                         break;
                     case 'restaurant':
                         mongoUser = await RestaurantSchema.updateOne({ email }, { $set: updatedData }).exec();
+                        break;
+                    case 'developer':
+                        mongoUser = await DeveloperSchema.updateOne({ email }, { $set: updatedh }).exec();
+                        break;
+                    case 'sale':
+                        mongoUser = await SaleSchema.updateOne({ email }, { $set: updatedh }).exec();
+                        break;
+                    case 'technical':
+                        mongoUser = await TechnicalSchema.updateOne({ email }, { $set: updatedh }).exec();
                         break;
                     default:
                         return res.status(400).json({ error: 'Invalid role specified' });
@@ -93,6 +108,15 @@ class UserController {
                     case 'restaurant':
                         mongoUser = await RestaurantSchema.deleteOne({ sqlId: id }).exec();
                         break;
+                    case 'developer':
+                        mongoUser = await DeveloperSchema.deleteOne({ sqlId: id }).exec();
+                        break;
+                    case 'sale':
+                        mongoUser = await SaleSchema.deleteOne({ sqlId: id }).exec();
+                        break;
+                    case 'technical':
+                        mongoUser = await TechnicalSchema.deleteOne({ sqlId: id }).exec();
+                        break;
                     default:
                         return res.status(400).json({ error: 'Invalid role specified' });
                 }
@@ -129,6 +153,8 @@ class UserController {
             // Create the user in MongoDB based on role
             const mongoUser = { name, email, phonenumber, adress, referralCodeowned: randomHash, referralCodeused: referralCodeused || 'none', password: hashedPassword, sqlId: sqlUser.id, state: 'activated' };
             const mongoDelivery = { name, email, phonenumber, vehicle, referralCodeowned: randomHash, referralCodeused: referralCodeused || 'none', password: hashedPassword, sqlId: sqlUser.id, state: 'activated' };
+            const mongoD = { name, email, phonenumber, password: hashedPassword, sqlId: sqlUser.id };
+
 
             let createdMongoUser;
             switch (role.toLowerCase()) {
@@ -140,6 +166,15 @@ class UserController {
                     break;
                 case 'restaurant':
                     createdMongoUser = await RestaurantSchema.create(mongoUser);
+                    break;
+                case 'developer':
+                    createdMongoUser = await DeveloperSchema.create(mongoD);
+                    break;
+                case 'sale':
+                    createdMongoUser = await SaleSchema.create(mongoD);
+                    break;
+                case 'technical':
+                    createdMongoUser = await TechnicalSchema.create(mongoD);
                     break;
                 default:
                     return res.status(400).json({ error: 'Invalid role specified' });
