@@ -70,8 +70,8 @@ router.get("/findrestaurantbyemail/:email", async (req, res) => {
 
 router.get("/findrestaurantbysqlid/:sqlid", async (req, res) => {
   try {
-      const {sqlid} = req.params
-      const newRestaurant = await Restaurant.findBySqlid(sqlid)
+      const {sqlId} = req.params
+      const newRestaurant = await Restaurant.findBySqlid(sqlId)
       res.status(200).send(newRestaurant)
   } catch (error) {
       res.status(500).send(error)

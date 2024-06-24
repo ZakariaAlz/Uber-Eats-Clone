@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
@@ -20,14 +21,14 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
-  const [admin, setAdmin] = useState(null);
+  const [restaurant, setRestaurant] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     // Retrieve the user object from local storage
-    const storedAdmin = localStorage.getItem('admin');
-    if (storedAdmin) {
-      setAdmin(JSON.parse(storedAdmin));
+    const storedrestaurant = localStorage.getItem('restaurant');
+    if (storedrestaurant) {
+      setRestaurant(JSON.parse(storedrestaurant));
     }
   }, []);
 
@@ -46,9 +47,8 @@ export default function AccountPopover() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('admin');
-    navigate('/login');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('restaurant');
   };
 
   return (
@@ -94,10 +94,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {admin?.nom} {admin?.prenom}
+            {restaurant?.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {admin?.username}
+            {restaurant?.email}
           </Typography>
         </Box>
 
@@ -112,10 +112,11 @@ export default function AccountPopover() {
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Logout
-        </MenuItem>
+        <Link to="/login">
+          <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
+            Logout
+          </MenuItem>
+        </Link>
       </Popover>
     </>
   );

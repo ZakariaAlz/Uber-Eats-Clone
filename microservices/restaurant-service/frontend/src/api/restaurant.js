@@ -31,9 +31,10 @@ export const getRestaurantbyemail = (email) => new Promise((resolve, reject) => 
     })
 })
 
-export const getRestaurantbySqlid = (sqlid) => new Promise((resolve, reject) => {
+export const getRestaurantbySqlid = (sqlId) => new Promise((resolve, reject) => {
 
-    Request.get(`/restaurant/findrestaurantbysqlid/${sqlid}`).then((res) => {
+    Request.get(`/restaurant/findrestaurantbysqlid/${sqlId}`).then((res) => {
+        console.log(res)
         resolve(res)
     }).catch((err) => {
         console.error(err)

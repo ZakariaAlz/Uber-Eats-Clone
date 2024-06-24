@@ -12,7 +12,10 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 // import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
-// import ArticlesPage from "./pages/ArticlesPage"
+import ArticlePage from "./pages/ArticlePage"
+import CreateArticle from "./pages/create-article"
+import UpdateArticle from "./pages/update-article"
+
 // import MenusPage from './pages/MenusPage';
 // import OrdersPage from './pages/OrdersPage';
 // import ProfilePage from './pages/ProfilePage';
@@ -35,7 +38,11 @@ export default function Router() {
         // { path: 'profile', element: <ProfilePage /> },
         // { path: 'user', element: <UserPage /> },
         // { path: 'products', element: <ProductsPage /> },
-        // { path: 'articles', element: <ArticlesPage /> },
+        { path: 'article', element: <ArticlePage /> },
+        { path: 'create-article', element: <CreateArticle /> },
+        { path: 'update-article', element: <UpdateArticle /> },
+
+
         // { path: 'menus', element: <MenusPage /> },
         // { path: 'orders', element: <OrdersPage /> },
         // // { path: 'blog', element: <BlogPage /> },

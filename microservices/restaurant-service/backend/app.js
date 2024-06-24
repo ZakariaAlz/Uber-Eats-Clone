@@ -4,12 +4,19 @@ const cors = require('cors');
 const db = require("./src/SQLmodels");
 const verifyMicroserviceApiKey = require('./src/middleware/verifyMicroserviceApiKey');
 const router = require('./src/routes');
+const bodyParser = require('body-parser');  
 require('dotenv').config();
 
 const app = express();
-app.use(express.urlencoded({ extended: true }));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors());
 app.use('/api', router);
+
+
+
 
 
 

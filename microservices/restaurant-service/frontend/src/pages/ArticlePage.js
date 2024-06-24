@@ -26,16 +26,16 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 
-import { getAdmins, deleteAdmin } from '../api/admin'
+import { getArticlebyRestaurant, deleteArticle } from '../api/article'
 
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'nom', label: 'Nom', alignRight: false },
-  { id: 'prenom', label: 'Prénom', alignRight: false },
-  { id: 'username', label: 'Username', alignRight: false },
-  { id: 'tel', label: 'Téléphone', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'description', label: 'Descritpion', alignRight: false },
+  { id: 'category', label: 'Category', alignRight: false },
+  { id: 'price', label: 'Price', alignRight: false },
   { id: 'edit', label: '', alignRight: true },
   { id: 'delete', label: '', alignRight: true },
 ];
@@ -84,16 +84,19 @@ export default function UserPage() {
 
   const [filterName, setFilterName] = useState('');
 
-  const [admins, setAdmins] = useState([]);
+  const [articles, setArticles] = useState([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [loading, setLoading] = useState(true)
 
+  const restaurant = JSON.parse(localStorage.getItem('restaurant')); // Parse restaurant data
+
+
   useEffect(() => {
-    getAdmins()
+    getArticlebyRestaurant(restaurant._id)
       .then((res) => {
-        setAdmins(res.data)
+        setArticles(res.data)
         setLoading(false)
       })
       .catch(err => console.error(err));
@@ -108,7 +111,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = admins.map((n) => n.firstname);
+      const newSelecteds = articles.map((n) => n.firstname);
       setSelected(newSelecteds);
       return;
     }
@@ -130,10 +133,10 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const handleDelete = (adminId) => {
-    deleteAdmin(adminId)
+  const handleDelete = (articleId) => {
+    deleteArticle(articleId)
       .then(() => {
-        setAdmins(admins.filter((admin) => admin._id !== adminId));
+        setArticles(articles.filter((article) => article._id !== articleId));
       })
       .catch((error) => {
         console.error(error);
@@ -142,9 +145,9 @@ export default function UserPage() {
 
 
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - admins.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - articles.length) : 0;
 
-  const filteredAdmins = applySortFilter(admins, getComparator(order, orderBy), filterName);
+  const filteredAdmins = applySortFilter(articles, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredAdmins.length && !!filterName;
 
@@ -152,17 +155,17 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Admin Page </title>
+        <title> Article Page </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Admins
+            Articles
           </Typography>
-          <Link to="/dashboard/create-admin">
+          <Link to="/dashboard/create-article">
             <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-              Ajouter Admin
+              Add Article
             </Button>
           </Link>
         </Stack>
@@ -177,7 +180,7 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={admins.length}
+                  rowCount={articles.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -198,8 +201,8 @@ export default function UserPage() {
                   ) : (
                     filteredAdmins
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((admin) => {
-                        const { _id, nom, prenom, username, tel } = admin;
+                      .map((article) => {
+                        const { _id, name, description, category, price } = article;
                         const isItemSelected = selected.indexOf(_id) !== -1;
 
                         return (
@@ -209,21 +212,21 @@ export default function UserPage() {
                             <TableCell align="left">
                               <Stack direction="row" alignItems="center" spacing={1}>
                                 
-                                {nom}
+                                {name}
                               </Stack>
                             </TableCell>
-                            <TableCell align="left">{prenom}</TableCell>
-                            <TableCell align="left">{username}</TableCell>
-                            <TableCell align="left">{tel}</TableCell>
+                            <TableCell align="left">{description}</TableCell>
+                            <TableCell align="left">{category}</TableCell>
+                            <TableCell align="left">{price}</TableCell>
                             <TableCell align="right">
 
 
-                              <Link to="/dashboard/update-admin" state={{
+                              <Link to="/dashboard/update-article" state={{
                                 id: _id,
-                                Nom: nom,
-                                Prenom: prenom,
-                                Username: username,
-                                Tel:tel
+                                Name: name,
+                                Description: description,
+                                Category: category,
+                                Price: price
                               }}>
                                 <IconButton style={{ color: "green" }}>
                                   <Iconify icon="ant-design:edit-filled" width={20} height={20} />
@@ -232,7 +235,7 @@ export default function UserPage() {
 
                               <IconButton style={{ color: "red" }} onClick={() => {
                                 if (window.confirm('Voulez-vous vraiment supprimer cet Admin ?')) {
-                                  handleDelete(admin._id);
+                                  handleDelete(article._id);
                                 }
                               }}>
                                 <Iconify icon="ant-design:delete-filled" width={20} height={20} />
@@ -256,7 +259,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={admins.length}
+            count={articles.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

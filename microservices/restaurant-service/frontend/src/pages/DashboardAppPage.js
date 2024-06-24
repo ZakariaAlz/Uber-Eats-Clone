@@ -28,10 +28,12 @@ export default function DashboardAppPage() {
   const [restaurant, setRestaurant] = useState(null);
 
   useEffect(() => {
-    if (userInfo && userInfo._id) {
-      getRestaurantbySqlid(userInfo._id)
+    if (userInfo && userInfo.email) {
+      getRestaurantbyemail(userInfo.email)
         .then((res) => {
           setRestaurant(res.data);
+          console.log(res.data)
+          localStorage.setItem('restaurant', JSON.stringify(res.data)); // Store restaurant data in local storage
           setLoading(false);
         })
         .catch((error) => {
@@ -42,123 +44,9 @@ export default function DashboardAppPage() {
       console.error("User info or user ID is not available.");
       setLoading(false);
     }
-  }, [userInfo]);
+  }, []);
 
 
-  // const [articles, setArticles] = useState()
-  // const [clients, setClients] = useState()
-  // const [cmdarticles, setCmdArticles] = useState()
-  // const [pubs, setPubs] = useState()
-  // const [versements, setVersements] = useState()
-
-  // useEffect(() => {
-
-  //   getArticles().then((res) => {
-  //     setArticles(res.data)
-  //     setLoading(false)
-  //   })
-  //   getClients().then((res) => {
-  //     setClients(res.data)
-  //     setLoading(false)
-  //   })
-  //   getCmdArticles().then((res) => {
-  //     setCmdArticles(res.data)
-  //     setLoading(false)
-  //   })
-  //   getPubs().then((res) => {
-  //     setPubs(res.data)
-  //     setLoading(false)
-  //   })
-  //   getVersements().then((res) => {
-  //     setVersements(res.data)
-  //     setLoading(false)
-  //   })
-  // }, [])
-
-  // const clientscount = clients ? clients.length : 0;
-  // const articlescount = articles ? articles.length : 0;
-  // const cmdarticlecount = cmdarticles ? cmdarticles.length : 0;
-  // const pubcount = pubs ? pubs.length : 0;
-
-
-
-  // const doittotale = () => {
-  //   let totalCredits = 0;
-  //   clients.forEach(client => {
-  //     totalCredits += client.solde;
-  //   });
-  //   return totalCredits;
-  // };
-
-  // const netrevenutotale = () => {
-  //   let revenu = 0;
-  //   cmdarticles.forEach(cmdarticle => {
-  //     if (cmdarticle.paye === "Payé Partiellement" || cmdarticle.paye === "Payé") {
-  //       cmdarticle.articles.forEach(article => {
-  //         revenu += article.prixd;
-  //       });
-  //     }
-  //   });
-  //   return revenu;
-  // };
-
-  // const articlepaye = () => {
-  //   let revenu = 0;
-  //   cmdarticles.forEach(cmdarticle => {
-  //     if (cmdarticle.paye === "Payé Partiellement" || cmdarticle.paye === "Payé") {
-  //       revenu += 1;
-  //     }
-  //   });
-  //   return revenu;
-  // };
-
-  // const revenutotale = () => {
-  //   let revenu = 0;
-  //   cmdarticles.forEach(cmdarticle => {
-  //     if (cmdarticle.paye === "Payé Partiellement" || cmdarticle.paye === "Payé") {
-  //       revenu += cmdarticle.prixtotal;
-  //     }
-  //   });
-  //   return revenu;
-  // };
-
-  // const revenutotalepub = () => {
-  //   let revenu = 0;
-  //   pubs.forEach(pub => {
-  //     if (pub.paye === "Payé Partiellement" || pub.paye === "Payé") {
-  //       revenu += pub.devis;
-  //     }
-  //   });
-  //   return revenu;
-  // };
-
-  // const nombrepubpaye = () => {
-  //   let revenu = 0;
-  //   pubs.forEach(pub => {
-  //     if (pub.paye === "Payé Partiellement" || pub.paye === "Payé") {
-  //       revenu += 1;
-  //     }
-  //   });
-  //   return revenu;
-  // };
-
-  // const revenunetpub = () => {
-  //   let revenu = 0;
-  //   pubs.forEach(pub => {
-  //     if (pub.paye === "Payé Partiellement" || pub.paye === "Payé") {
-  //       revenu += pub.versement;
-  //     }
-  //   });
-  //   return revenu;
-  // };
-
-  // const versementtotal = () => {
-  //   let revenu = 0;
-  //   versements.forEach(versement => {
-  //     revenu += versement.montant;
-  //   });
-  //   return revenu;
-  // };
 
 
 
@@ -169,13 +57,14 @@ export default function DashboardAppPage() {
       </Helmet>
       <div>
         <div>
+          <Typography variant="h3" sx={{ mb: 5 }}>
+            Welcome, {restaurant && restaurant.name}!
+          </Typography>
           <Container maxWidth="xl">
             <Typography variant="h4" sx={{ mb: 5 }}>
               Statistiques
             </Typography>
-            {/* <Typography variant="h6" sx={{ mb: 5 }}>
-                Welcome, {restaurant.name}!
-              </Typography> */}
+
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6} md={3} >
                 <AppWidgetSummary title="Clients" color="info" icon={'mdi:user-group-outline'} />

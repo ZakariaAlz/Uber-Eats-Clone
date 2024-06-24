@@ -31,7 +31,7 @@ db.sequelize.sync()
 const services = [
     { path: '/client-service', target: 'http://localhost:5001' },
     { path: '/delivery-service', target: 'http://localhost:5002' },
-    { path: '/restaurateur-service', target: 'http://localhost:5003' },
+    { path: '/restaurant-service', target: 'http://localhost:5003' },
     { path: '/sales-service', target: 'http://localhost:5004' },
     { path: '/technical-service', target: 'http://localhost:5005' },
     { path: '/developper-service', target: 'http://localhost:5006' },
