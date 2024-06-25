@@ -24,6 +24,7 @@ const CommandeSchema = new Schema({
             ref: 'Article' // Reference to the Article model
         },
         name: String,
+        category: String,
         quantity: Number,
         price: Number,
         totalprice: Number

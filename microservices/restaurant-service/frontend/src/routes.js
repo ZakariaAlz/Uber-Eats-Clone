@@ -17,7 +17,10 @@ import UpdateArticle from "./pages/update-article"
 import MenuPage from './pages/MenuPage';
 import CreateMenu from "./pages/create-menu"
 import UpdateMenu from "./pages/update-menu"
-// import OrdersPage from './pages/OrdersPage';
+
+import OrderPage from './pages/OrderPage';
+import UpdateOrder from "./pages/update-order"
+
 import ProfilePage from './pages/ProfilePage';
 import SignUpPage from './pages/SignupPage';
 
@@ -44,7 +47,10 @@ export default function Router() {
         { path: 'menu', element: <MenuPage /> },
         { path: 'create-menu', element: <CreateMenu /> },
         { path: 'update-menu', element: <UpdateMenu /> },
-        // { path: 'orders', element: <OrdersPage /> },
+
+        { path: 'order', element: <OrderPage /> },
+        { path: 'update-order', element: <UpdateOrder /> },
+
       ],
     },
     {

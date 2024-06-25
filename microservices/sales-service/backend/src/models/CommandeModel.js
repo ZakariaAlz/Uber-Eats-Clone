@@ -42,14 +42,11 @@ const CommandeSchema = new Schema({
         type: Number,
         required: true
     },
-    versement: {
-        type: Number,
-    },
     status: {
         type: String,
         required: true
     },
-    deleverydate: {
+    deliverydate: {
         type: String,
         required: true
     },

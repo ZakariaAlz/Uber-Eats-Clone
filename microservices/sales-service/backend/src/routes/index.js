@@ -8,6 +8,13 @@ const commande = require('./commande')
 const delivery = require('./delivery')
 const menu = require('./menu')
 const restaurant = require('./restaurant')
+const developer = require('./Developer')
+const component = require('./component')
+const sale = require('./sale')
+
+
+
+
 
 
 
@@ -22,6 +29,12 @@ router.use('/commande', commande)
 router.use('/delivery', delivery)
 router.use('/menu', menu)
 router.use('/restaurant', restaurant)
+router.use('/developer', developer)
+router.use('/component', component)
+router.use('/sale', sale)
+
+
+
 
 
 
