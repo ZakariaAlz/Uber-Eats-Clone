@@ -61,7 +61,7 @@ export default function LoginPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" align='center' gutterBottom>
-              Sign up to CESI-Eats Components
+              Sign up to CESI-Eats Sales
             </Typography>
 
             <Typography variant="body1" sx={{ mb: 5 }}>

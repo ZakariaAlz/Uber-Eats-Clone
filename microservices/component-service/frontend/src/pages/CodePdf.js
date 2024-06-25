@@ -20,14 +20,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const CodePdf = ({ data }) => (
+const ReceiptPDF = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
+      <Text style={styles.title}>Component</Text>
       {data.map((item, index) => (
-        <Text key={index} style={styles.text}>{`${item.name}: ${item.code}`}</Text>
+        <Text key={index} style={styles.text}>{`${item.name}: ${item.value}`}</Text>
       ))}
     </Page>
   </Document>
 );
 
-export default CodePdf;
+export default ReceiptPDF;

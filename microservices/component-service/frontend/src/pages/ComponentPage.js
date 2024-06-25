@@ -197,7 +197,7 @@ export default function UserPage() {
                                                         <TableCell align="left">{code}</TableCell>
                                                         <TableCell align="right">
                                                             <IconButton style={{ color: 'green' }}>
-                                                                <PDFDownloadLink document={<CodePdf data={receiptData} />} fileName={`receipt_${_id}.pdf`}>
+                                                                <PDFDownloadLink document={<CodePdf data={receiptData} />} fileName={`Code_${name}.pdf`}>
                                                                     <Iconify icon="mdi:file-pdf-box" width={20} height={20} />
                                                                 </PDFDownloadLink>
                                                             </IconButton>
