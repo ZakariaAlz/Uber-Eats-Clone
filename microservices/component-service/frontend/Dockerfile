@@ -1,23 +1,43 @@
-# # Stage 1: Build the React app
-# FROM node:14 AS build
-# WORKDIR /app
-# COPY package.json package-lock.json ./
-# RUN npm install
-# COPY . ./
-# RUN npm run build
+# # # Use the official Nginx image as the base image
+# # FROM nginx:latest
 
-# # Stage 2: Serve the React app with Nginx
+# # # Copy the custom Nginx configuration file
+# # COPY nginx.conf /etc/nginx/nginx.conf
+
+# # # Copy the build output to the Nginx HTML directory
+# # COPY build/ /usr/share/nginx/html
+
+# # # Expose port 80
+# # EXPOSE 80
+
+# # # Start Nginx when the container starts
+# # CMD ["nginx", "-g", "daemon off;"]
+
+# # Use the official Nginx image as the base image
 # FROM nginx:latest
-# COPY --from=build /app/build /usr/share/nginx/html
-# COPY ./nginx.conf /etc/nginx/nginx.conf
+
+# # Copy the custom Nginx configuration file for Technical Service
+# COPY nginx/nginx.conf /etc/nginx/nginx.conf
+
+# # Copy the build output for Technical Service to the Nginx HTML directory
+# COPY microservices/technical-service/frontend/build/ /usr/share/nginx/html
+
+# # Expose port 80
+# EXPOSE 80
+
+# # Start Nginx when the container starts
+# CMD ["nginx","-g", "daemon off;"]
 # Use the official Nginx image as the base image
 FROM nginx:latest
 
-# Copy the built files into the NGINX container
-COPY ./microservices/component-service/frontend/build /usr/share/nginx/html
+# Copy the custom Nginx configuration file for Sales Service
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+
+# Copy the build output for Sales Service to the Nginx HTML directory
+COPY microservices/component-service/frontend/build/ /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
 
-# Start Nginx when the container has started
+# Start Nginx when the container starts
 CMD ["nginx", "-g", "daemon off;"]

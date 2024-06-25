@@ -68,10 +68,10 @@
     "yaml": "^1.10.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-scripts start --config ../config/webpack.config.custom.js",
+    "build": "react-scripts build --config ../config/webpack.config.custom.js",
+    "test": "react-scripts test --config ../config/webpack.config.custom.js",
+    "eject": "react-scripts eject --config ../config/webpack.config.custom.js"
   },
   "keywords": [],
   "author": "",

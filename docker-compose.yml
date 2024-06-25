@@ -16,15 +16,6 @@ services:
     networks:
       - app-network
 
-  auth-frontend:
-    build:
-      context: ./microservices/auth-service/frontend
-    container_name: auth-frontend
-    ports:
-      - "8080:80"
-    networks:
-      - app-network
-
   client-service:
     build: 
       context: ./microservices/client-service/backend
@@ -64,7 +55,7 @@ services:
       context: ./microservices/delivery-service/frontend
     container_name: delivery-frontend
     ports:
-      - "8082:8080"
+      - "8082:80"
     networks:
       - app-network
 
@@ -170,6 +161,7 @@ services:
       - ./gateway/kong/kong.yml:/usr/local/kong/declarative/kong.yml # Kong declarative config file
     ports:
       - "8000:8000"
+      - "8443:8443"
     depends_on:
       - auth-service
       - client-service
@@ -183,20 +175,27 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: gateway 
+    container_name: nginx
     volumes: 
-      - ./gateway/nginx/nginx.conf:/etc/nginx/nginx.conf # Nginx configuration file
-    build:
-      context: ./gateway/nginx
-      dockerfile: Dockerfile
+      - ./microservices/client-service/frontend/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./microservices/client-service/frontend/build:/usr/share/nginx/html
+      - ./microservices/delivery-service/frontend/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./microservices/delivery-service/frontend/build:/usr/share/nginx/html
+      - ./microservices/restaurant-service/frontend/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./microservices/restaurant-service/frontend/build:/usr/share/nginx/html
+      - ./microservices/technical-service/frontend/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./microservices/technical-service/frontend/build:/usr/share/nginx/html
+      - ./microservices/sales-service/frontend/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./microservices/sales-service/frontend/build:/usr/share/nginx/html
+      - ./microservices/component-service/frontend/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./microservices/component-service/frontend/build:/usr/share/nginx/html
     ports:
-      - "8080:8080" # Nginx port
+      - "8080:80" # Nginx HTTP port
     networks:
       - app-network # Connect to the app-network
     depends_on:
       - kong
-  
-
+   
 networks:
   app-network:
     driver: bridge

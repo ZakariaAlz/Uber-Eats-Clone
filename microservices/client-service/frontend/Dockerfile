@@ -1,24 +1,14 @@
-# # Stage 1: Build the React app
-# FROM node:14 AS build
-# WORKDIR /app
-# COPY package.json package-lock.json ./
-# RUN npm install
-# COPY . ./
-# RUN npm run build
-
-# # Stage 2: Serve the React app with Nginx
-# FROM nginx:latest
-# COPY --from=build /app/build /usr/share/nginx/html
-# COPY ./gateway/nginx/nginx.conf /etc/nginx/nginx.conf
-
-# Use the official Nginx image as the base image
+# Example for client-service frontend Dockerfile
 FROM nginx:latest
 
-# Copy the built files into the NGINX container
-COPY ./microservices/client-service/frontend/build /usr/share/nginx/html
+# Copy the custom Nginx configuration file
+COPY gateway/nginx/nginx.conf /etc/nginx/nginx.conf
 
-# Expose port 80
-EXPOSE 80
+# Copy the build output of client-service frontend to the Nginx HTML directory
+COPY microservices/client-service/frontend/build/ /usr/share/nginx/clients/
 
-# Start Nginx when the container has started
+# Expose port 8080 (assuming your nginx.conf listens on 8080)
+EXPOSE 8080
+
+# Start Nginx when the container starts
 CMD ["nginx", "-g", "daemon off;"]
