@@ -10,10 +10,10 @@ ENV KONG_PROXY_ACCESS_LOG=/dev/stdout
 ENV KONG_ADMIN_ACCESS_LOG=/dev/stdout
 ENV KONG_PROXY_ERROR_LOG=/dev/stderr
 ENV KONG_ADMIN_ERROR_LOG=/dev/stderr
-ENV KONG_ADMIN_LISTEN=0.0.0.0:8001
+ENV KONG_ADMIN_LISTEN=0.0.0.0:8000
 
 # Expose necessary ports
-EXPOSE 8001
+EXPOSE 8000
 
 # Start Kong using the declarative configuration
 ENTRYPOINT ["/docker-entrypoint.sh"]

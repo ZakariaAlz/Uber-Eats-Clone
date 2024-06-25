@@ -1,25 +1,25 @@
 version: '3.8'
 
 services:
-  user-service:
+  auth-service:
     build: 
-      context: ./microservices/user-service/backend
-    container_name: user-service
+      context: ./microservices/auth-service/backend
+    container_name: auth-service
     ports:
       - "3001:3001"
     environment:
       - NODE_ENV=development
-      - DB_HOST=user-service-db
+      - DB_HOST=auth-service-db
       - DB_USER=admin
       - DB_PASSWORD=admin
-      - DB_NAME=cesieats_auth
+      - DB_NAME=cesi_eats
     networks:
       - app-network
 
-  user-frontend:
+  auth-frontend:
     build:
-      context: ./microservices/user-service/frontend
-    container_name: user-frontend
+      context: ./microservices/auth-service/frontend
+    container_name: auth-frontend
     ports:
       - "8080:80"
     networks:
@@ -40,6 +40,7 @@ services:
   client-frontend:
     build: 
       context: ./microservices/client-service/frontend
+      dockerfile: Dockerfile
     container_name: client-frontend
     ports:
       - "8081:80"
@@ -124,6 +125,7 @@ services:
   sales-frontend:
     build: 
       context: ./microservices/sales-service/frontend
+      dockerfile: Dockerfile
     container_name: sales-frontend
     ports:
       - "8085:80"
@@ -145,6 +147,7 @@ services:
   component-frontend:
     build: 
       context: ./microservices/component-service/frontend
+      dockerfile: Dockerfile
     container_name: component-frontend
     ports:
       - "8086:80"
@@ -154,7 +157,7 @@ services:
   kong:
     build:
       context: ./gateway/kong
-      dockerfile: ./kong/Dockerfile
+      dockerfile: Dockerfile
     environment:
       - KONG_DATABASE=off
       - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
@@ -162,11 +165,13 @@ services:
       - KONG_ADMIN_ACCESS_LOG=/dev/stdout
       - KONG_PROXY_ERROR_LOG=/dev/stderr
       - KONG_ADMIN_ERROR_LOG=/dev/stderr
-      - KONG_ADMIN_LISTEN=0.0.0.0:8001
+      - KONG_ADMIN_LISTEN=0.0.0.0:8000
+    volumes:
+      - ./gateway/kong/kong.yml:/usr/local/kong/declarative/kong.yml # Kong declarative config file
     ports:
-      - "8001:8001"
+      - "8000:8000"
     depends_on:
-      - user-service
+      - auth-service
       - client-service
       - delivery-service
       - restaurant-service
@@ -178,15 +183,19 @@ services:
 
   nginx:
     image: nginx:latest
+    container_name: gateway 
+    volumes: 
+      - ./gateway/nginx/nginx.conf:/etc/nginx/nginx.conf # Nginx configuration file
     build:
       context: ./gateway/nginx
-      dockerfile: ./nginx/Dockerfile
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8080:8080" # Nginx port
+    networks:
+      - app-network # Connect to the app-network
     depends_on:
       - kong
-    networks:
-      - app-network
+  
 
 networks:
   app-network:
