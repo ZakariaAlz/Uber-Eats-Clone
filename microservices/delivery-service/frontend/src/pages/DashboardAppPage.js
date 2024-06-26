@@ -10,7 +10,7 @@ import { getClients } from '../api/client';
 import { getArticles } from '../api/article';
 import { getCmdArticles } from '../api/cmdarticle';
 import { getVersements } from '../api/versement';
-import { getRestaurantbyemail, getRestaurantbySqlid } from '../api/restaurant';
+import { getDeliverybyemail, getDeliverybySqlid } from '../api/delivery';
 
 
 import { AuthContext } from "../helpers/AuthContext";
@@ -24,19 +24,20 @@ export default function DashboardAppPage() {
   const { authState } = useContext(AuthContext);
   const userInfo = authState.userInfo;
 
-  const [restaurant, setRestaurant] = useState(null);
+  const [delivery, setDelivery] = useState(null);
 
   useEffect(() => {
     if (userInfo && userInfo.email) {
-      getRestaurantbyemail(userInfo.email)
+      getDeliverybyemail(userInfo.email)
         .then((res) => {
-          setRestaurant(res.data);
-          console.log(res.data)
-          localStorage.setItem('restaurant', JSON.stringify(res.data)); // Store restaurant data in local storage
+          const deliveryData = Array.isArray(res.data) ? res.data[0] : res.data;
+          setDelivery(deliveryData);
+          console.log(deliveryData)
+          localStorage.setItem('delivery', JSON.stringify(deliveryData)); // Store delivery data in local storage
           setLoading(false);
         })
         .catch((error) => {
-          console.error("Error fetching restaurant data:", error.response ? error.response.data : error.message);
+          console.error("Error fetching delivery data:", error.response ? error.response.data : error.message);
           setLoading(false);
         });
     } else {
@@ -57,7 +58,7 @@ export default function DashboardAppPage() {
       <div>
         <div>
           <Typography variant="h3" sx={{ mb: 5 }}>
-            Welcome, {restaurant && restaurant.name}!
+            Welcome, {delivery && delivery.name}!
           </Typography>
           <Container maxWidth="xl">
             <Typography variant="h4" sx={{ mb: 5 }}>

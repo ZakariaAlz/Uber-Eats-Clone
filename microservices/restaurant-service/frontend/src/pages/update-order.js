@@ -4,38 +4,38 @@ import TextField from '@mui/material/TextField';
 import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, InputAdornment, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useLocation, Link } from 'react-router-dom';
-import { updateCommande } from '../api/commande'; // import the createUser function from your API file
-
-
+import { updateCommande } from '../api/commande'; // import the updateCommande function from your API file
 
 export default function Update() {
-    const { id, commande, Client, Delivery, Restaurant, State, Totalprice, Articles, Menus } = useLocation().state
-    const [state, setState] = useState(State);
+    const { id, commande, Client, Delivery, Restaurant, Totalprice, Articles, Menus } = useLocation().state;
+    const [state, setState] = useState(commande.state);
 
-    console.log(Articles)
     const handleSubmit = () => {
-
         const updatedCommande = {
             ...commande,
-            state,
-        }
+            state
+        };
 
-        if (window.confirm("Voullez vous vraiment continuer cet Modification ?")) {
-            updateCommande(updatedCommande, id)
+        if (window.confirm("Are you sure you want to update?")) {
+            updateCommande(updatedCommande, commande._id)
                 .then((res) => {
-                    console.log(res)
+                    console.log(res);
                     window.alert("Order Updated!");
                 })
                 .catch((error) => {
-                    window.alert("Order didn't get updated !!!");
+                    window.alert("Order update failed!");
                     console.error(error);
                 });
         }
     };
+
+    const handleStateChange = (event) => {
+        setState(event.target.value); // Update state when the user selects a different option
+    };
+
     return (
         <form>
             <h2>Update an Order</h2>
-
             <Box sx={{ width: '100%' }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     {/* Render text fields */}
@@ -80,10 +80,6 @@ export default function Update() {
                         />
                     </Grid>
 
-
-
-                    {/* Render other text fields similarly... */}
-
                     {/* Display Articles */}
                     <Grid item xs={12}>
                         <h3>Articles</h3>
@@ -93,10 +89,9 @@ export default function Update() {
                                     <TableRow>
                                         <TableCell>Name</TableCell>
                                         <TableCell>Category</TableCell>
-                                        <TableCell>Quantite</TableCell>
+                                        <TableCell>Quantity</TableCell>
                                         <TableCell>Price</TableCell>
                                         <TableCell>Total Price</TableCell>
-                                        {/* Add more table headers for other properties as needed */}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -107,13 +102,13 @@ export default function Update() {
                                             <TableCell>{article.quantity}</TableCell>
                                             <TableCell>{article.price}</TableCell>
                                             <TableCell>{article.totalprice}</TableCell>
-                                            {/* Add more table cells for other properties as needed */}
                                         </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
                         </TableContainer>
                     </Grid>
+                    {/* Display Menus */}
                     <Grid item xs={12}>
                         <h3>Menus</h3>
                         <TableContainer component={Paper}>
@@ -121,10 +116,9 @@ export default function Update() {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Name</TableCell>
-                                        <TableCell>Quantite</TableCell>
+                                        <TableCell>Quantity</TableCell>
                                         <TableCell>Price</TableCell>
                                         <TableCell>Total Price</TableCell>
-                                        {/* Add more table headers for other properties as needed */}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -134,31 +128,29 @@ export default function Update() {
                                             <TableCell>{menu.quantity}</TableCell>
                                             <TableCell>{menu.price}</TableCell>
                                             <TableCell>{menu.totalprice}</TableCell>
-                                            {/* Add more table cells for other properties as needed */}
                                         </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
                         </TableContainer>
                     </Grid>
+                    {/* Select State */}
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <FormControl sx={{ width: '20%' }}>
                             <InputLabel id="etat-label">State</InputLabel>
                             <Select
-                                id="outlined-basic"
                                 labelId="etat-label"
-                                variant="outlined"
+                                id="outlined-basic"
                                 value={state}
-                                onChange={(event) => {
-                                    setState(event.target.value);
-                                }}
+                                onChange={handleStateChange} // Update state when the user selects a different option
                                 label="State"
                             >
-                                <MenuItem value="Confirmé">Confirmé</MenuItem>
-                                <MenuItem value="Annulée">Annulée</MenuItem>
+                                <MenuItem value="In Preparation">In Preparation</MenuItem>
+                                <MenuItem value="Ready for Delivery">Ready for Delivery</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
+                    {/* Display Total Price */}
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                         <TextField
                             id="outlined-basic"
@@ -172,17 +164,14 @@ export default function Update() {
                             disabled
                         />
                     </Grid>
+                    {/* Update Button */}
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Link to="/dashboard/commande">
-                            <Button variant="contained" color="primary" onClick={handleSubmit}>
-                                Update Order
-                            </Button>
-                        </Link>
+                        <Button variant="contained" color="primary" onClick={handleSubmit}>
+                            Update Order
+                        </Button>
                     </Grid>
-
-                    {/* Render the rest of your form... */}
                 </Grid>
             </Box>
-        </form >
+        </form>
     );
 }

@@ -26,6 +26,8 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import { getComponents, deleteComponent } from '../api/component';
+import { createLog } from '../api/log';
+
 import CodePdf from './CodePdf';  // import your PDF document component
 
 // ----------------------------------------------------------------------
@@ -69,6 +71,8 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
+    const developer = JSON.parse(localStorage.getItem('developer'));// Parse restaurant data
+
     const [page, setPage] = useState(0);
     const [order, setOrder] = useState('asc');
     const [selected, setSelected] = useState([]);
@@ -123,6 +127,20 @@ export default function UserPage() {
             })
             .catch((error) => {
                 console.error(error);
+            });
+    };
+
+    const handleDownload = (component) => {
+        const log = {
+            value: `This account: ${developer.email}, has downloaded: ${component.name}`,
+            type: "Download",
+        };
+        createLog(log)
+            .then(() => {
+                console.log("Log created successfully");
+            })
+            .catch((error) => {
+                console.error("Error creating log", error);
             });
     };
 
@@ -197,7 +215,11 @@ export default function UserPage() {
                                                         <TableCell align="left">{code}</TableCell>
                                                         <TableCell align="right">
                                                             <IconButton style={{ color: 'green' }}>
-                                                                <PDFDownloadLink document={<CodePdf data={receiptData} />} fileName={`Code_${name}.pdf`}>
+                                                                <PDFDownloadLink
+                                                                    document={<CodePdf data={receiptData} />}
+                                                                    fileName={`Code_${name}.pdf`}
+                                                                    onClick={() => handleDownload(component)}
+                                                                >
                                                                     <Iconify icon="mdi:file-pdf-box" width={20} height={20} />
                                                                 </PDFDownloadLink>
                                                             </IconButton>

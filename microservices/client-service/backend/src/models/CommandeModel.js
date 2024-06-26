@@ -12,7 +12,8 @@ const CommandeSchema = new Schema({
     },
     delivery: {
         type: Schema.Types.ObjectId,
-        ref: 'Delivery' // Reference to the Client model
+        ref: 'Delivery', // Reference to the Client model
+        required: false
     },
     restaurant: {
         type: Schema.Types.ObjectId,
@@ -24,8 +25,9 @@ const CommandeSchema = new Schema({
             ref: 'Article' // Reference to the Article model
         },
         name: String,
-        quantity: Number,
-        price: Number,
+        category: String,
+        quantity: String,
+        price: String,
         totalprice: Number
     }],
     menus: [{
@@ -34,7 +36,7 @@ const CommandeSchema = new Schema({
           ref: 'Menu' // Reference to the Article model
         },
         name: String,
-        quantity: Number,
+        quantity: String,
         price: Number,
         totalprice: Number
       }],
@@ -42,16 +44,13 @@ const CommandeSchema = new Schema({
         type: Number,
         required: true
     },
-    versement: {
-        type: Number,
-    },
-    status: {
+    state: {
         type: String,
         required: true
     },
-    deleverydate: {
+    deliverydate: {
         type: String,
-        required: true
+        required: false
     },
     created_at: {
         type: Date,

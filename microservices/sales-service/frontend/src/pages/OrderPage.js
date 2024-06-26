@@ -254,39 +254,8 @@ export default function UserPage() {
                             <TableCell align="left">{totalprice}DZD</TableCell>
                             <TableCell align="left">{deliverydate}</TableCell>
                             <TableCell align="right">
-                              {/* {state === 'Delivered' ? (
-                                <PDFDownloadLink
-                                  document={<ReceiptPDF data={generateReceiptData} articles={articles} />}
-                                  fileName={`payment_receipt_${no}.pdf`}
-                                >
-                                  {({ url, loading }) => (
-                                    loading ? 'Téléchargement en cours...' : (
-                                      <IconButton
-                                        variant="contained"
-                                        color="secondary"
-                                        component="a"
-                                        href={url}
-                                        target="_blank"
-                                        download={`payment_receipt_${no}.pdf`}
-                                      >
-                                        <Iconify icon="ant-design:download-outlined" width={20} height={20} />
-                                      </IconButton>
-                                    )
-                                  )}
-                                </PDFDownloadLink>
-                              ) :
-                                (null)} */}
 
-                              <IconButton style={{ color: "red" }} onClick={() => {
-                                if (window.confirm('Are you sure you want to delete this Order?')) {
-                                  handleDelete(commande._id);
-                                }
-                              }}>
-                                <Iconify icon="ant-design:delete-filled" width={20} height={20} />
-                              </IconButton>
-
-
-                              <Link to="/dashboard/voir-commande" state={{
+                              <Link to="/dashboard/check-order" state={{
                                 id: _id,
                                 commande,
                                 Client: client?.name || 'N/A',
@@ -300,23 +269,6 @@ export default function UserPage() {
                                 <IconButton style={{ color: "purple" }}>
                                   <Iconify icon="iconoir:eye" width={20} height={20} />
                                 </IconButton>
-                              </Link>
-                              <Link to="/dashboard/update-commande" state={{
-                                id: _id,
-                                commande,
-                                Client: client?.name || 'N/A',
-                                Delivery: delivery?.name || 'N/A',
-                                Restaurant: restaurant?.name || 'N/A',
-                                State: state || 'N/A',
-                                Totalprice: totalprice || 'N/A',
-                                Articles: articles,
-                                Menus: menus
-                              }}>
-                                {state !== "Delivered" && (
-                                  <IconButton style={{ color: "orange" }}>
-                                    <Iconify icon="ant-design:edit-filled" width={20} height={20} />
-                                  </IconButton>
-                                )}
                               </Link>
 
                             </TableCell>

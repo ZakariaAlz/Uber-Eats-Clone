@@ -29,14 +29,14 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
   const { authState, setAuthState } = useContext(AuthContext); // Added setAuthState to update auth state
-  const [restaurant, setRestaurant] = useState(null);
+  const [delivery, setDelivery] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     // Retrieve the user object from local storage
-    const storedrestaurant = localStorage.getItem('restaurant');
-    if (storedrestaurant) {
-      setRestaurant(JSON.parse(storedrestaurant));
+    const storeddelivery = localStorage.getItem('delivery');
+    if (storeddelivery) {
+      setDelivery(JSON.parse(storeddelivery));
     }
   }, []);
 
@@ -56,7 +56,7 @@ export default function AccountPopover() {
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('restaurant');
+    localStorage.removeItem('delivery');
     setAuthState({ // Reset the auth state
       userInfo: null,
       isAuthenticated: false
@@ -107,10 +107,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {restaurant?.name}
+            {delivery?.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {restaurant?.email}
+            {delivery?.email}
           </Typography>
         </Box>
 

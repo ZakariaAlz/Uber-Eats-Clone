@@ -6,12 +6,12 @@ import * as Yup from 'yup';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
-import { updateRestaurant } from '../api/restaurant';
+import { updateDelivery } from '../api/delivery';
 
 function ProfilePage() {
     const { authState, setAuthState } = useContext(AuthContext); // Added setAuthState to update auth state
     const userInfo = authState.userInfo;
-    const restaurant = JSON.parse(localStorage.getItem('restaurant')); // Parse restaurant data
+    const delivery = JSON.parse(localStorage.getItem('delivery')); // Parse delivery data
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarContent, setSnackbarContent] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -30,14 +30,14 @@ function ProfilePage() {
             name: userInfo?.name || '',
             email: userInfo?.email || '',
             phonenumber: userInfo?.phonenumber || '',
-            adress: userInfo?.adress || '',
+            vehicle: userInfo?.vehicle || '',
             referralCodeused: userInfo?.referralCodeused || ''
         },
         validationSchema: Yup.object({
             name: Yup.string().required('Name is required'),
             email: Yup.string().email('Invalid email address').required('Email is required'),
             phonenumber: Yup.number().required('Phone number is required'),
-            adress: Yup.string().required('Address is required'),
+            vehicle: Yup.string().required('Vehicle is required'),
             referralCodeused: Yup.string()
         }),
         onSubmit: values => {
@@ -46,14 +46,14 @@ function ProfilePage() {
             }
 
             // Update other fields in MongoDB
-            const restaurantUpdate = {
-                ...restaurant,
+            const deliveryUpdate = {
+                ...delivery,
                 name: values.name,
                 phonenumber: values.phonenumber,
-                adress: values.adress
+                vehicle: values.vehicle
             };
 
-            updateRestaurant(restaurantUpdate, restaurant._id)
+            updateDelivery(deliveryUpdate, delivery._id)
                 .then((res) => {
                     console.log(res);
                     setSnackbarContent('Profile updated in MongoDB!');
@@ -156,12 +156,12 @@ function ProfilePage() {
                             <Grid item sm={12}>
                                 <TextField
                                     fullWidth
-                                    label="Address"
-                                    name="adress"
-                                    value={formik.values.adress}
+                                    label="Vehicle"
+                                    name="vehicle"
+                                    value={formik.values.vehicle}
                                     onChange={formik.handleChange}
-                                    error={formik.touched.adress && Boolean(formik.errors.adress)}
-                                    helperText={formik.touched.adress && formik.errors.adress}
+                                    error={formik.touched.vehicle && Boolean(formik.errors.vehicle)}
+                                    helperText={formik.touched.vehicle && formik.errors.vehicle}
                                 />
                             </Grid>
                             <Grid item lg={6} md={6} sm={12}>
@@ -182,7 +182,7 @@ function ProfilePage() {
                                     disabled
                                     label="Referral Code Used"
                                     name="referralCodeused"
-                                    value={restaurant.referralCodeused}
+                                    value={delivery.referralCodeused}
                                     onChange={formik.handleChange}
                                     error={formik.touched.referralCodeused && Boolean(formik.errors.referralCodeused)}
                                     helperText={formik.touched.referralCodeused && formik.errors.referralCodeused}
@@ -194,10 +194,10 @@ function ProfilePage() {
                                         Referral Code Owned:
                                     </Typography>
                                     <Typography
-                                        onClick={() => handleCopy(restaurant.referralCodeowned)}
+                                        onClick={() => handleCopy(delivery.referralCodeowned)}
                                         style={{ cursor: 'pointer', marginLeft: '10px' }}
                                     >
-                                        {restaurant.referralCodeowned} <ContentCopyIcon fontSize="small" sx={{ pt: 0.5 }} color="action" />
+                                        {delivery.referralCodeowned} <ContentCopyIcon fontSize="small" sx={{ pt: 0.5 }} color="action" />
                                     </Typography>
                                 </Box>
                             </Grid>

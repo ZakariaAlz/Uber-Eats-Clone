@@ -57,4 +57,14 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
+router.get("/findarticlebyrestaurant/:restaurantId", async (req, res) => {
+  try {
+      const {restaurantId} = req.params
+      const newArticle = await Article.findByRestaurant(restaurantId)
+      res.status(200).send(newArticle)
+  } catch (error) {
+      res.status(500).send(error)
+  }
+});
+
 module.exports = router;

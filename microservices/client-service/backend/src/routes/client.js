@@ -61,5 +61,15 @@ router.get("/", async (req, res) => {
     }
   });
 
+
+  router.get("/findclientbyemail/:email", async (req, res) => {
+    try {
+        const {email} = req.params
+        const newClient = await Client.findByEmail(email)
+        res.status(200).send(newClient)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+  });
   
   module.exports = router;

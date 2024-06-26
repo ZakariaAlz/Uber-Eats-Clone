@@ -1,5 +1,5 @@
 const DeliverySchema = require("../models/DeliveryModel")
-
+const bcrypt = require("bcryptjs")
 
 class Delivery {
 

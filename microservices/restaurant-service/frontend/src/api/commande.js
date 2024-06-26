@@ -40,3 +40,13 @@ export const deleteCommande = (commande) => new Promise((resolve, reject) => {
         reject(err)
     })
 })
+
+export const getCommandebyRestaurant = (restaurant) => new Promise((resolve, reject) => {
+
+    Request.get(`/commande/findcommandebyrestaurant/${restaurant}`).then((res) => {
+        resolve(res)
+    }).catch((err) => {
+        console.error(err)
+        reject(err)
+    })
+})

@@ -46,7 +46,7 @@ class Commande {
 
     static async findByRestaurant(restaurantId) {
 
-        const t = await CommandeSchema.find({restaurant: restaurantId}).sort({ $natural: -1 }).exec()
+        const t = await CommandeSchema.find({restaurant: restaurantId}).populate('delivery').populate('client').sort({ $natural: -1 }).exec()
         return t
     }
 }

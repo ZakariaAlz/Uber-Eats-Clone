@@ -94,10 +94,10 @@ router.get("/find/:id", async (req, res) => {
 });
 
 // Find a Pub by client
-router.get("/findmenubyarticle/:articleId", async (req, res) => {
+router.get("/findmenubyrestaurant/:restaurantId", async (req, res) => {
   try {
-      const {articleId} = Menu.params
-      const newMenu = await Menu.findByArticle(articleId)
+      const {restaurantId} = req.params
+      const newMenu = await Menu.findByRestaurant(restaurantId)
       res.status(200).send(newMenu)
   } catch (error) {
       res.status(500).send(error)

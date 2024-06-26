@@ -26,6 +26,8 @@ import CreateClient from "./pages/create-client"
 import UpdateClient from "./pages/update-client"
 
 import OrderPage from "./pages/OrderPage"
+import CheckOrder from "./pages/check-order"
+
 
 import ProfilePage from './pages/ProfilePage';
 import SignUpPage from './pages/SignupPage';
@@ -59,7 +61,9 @@ export default function Router() {
         { path: 'update-client', element: <UpdateClient /> },
 
         { path: 'order', element: <OrderPage /> },
-        
+        { path: 'check-order', element: <CheckOrder /> },
+
+
         // { path: 'component', element: <ComponentPage /> },
       ],
     },

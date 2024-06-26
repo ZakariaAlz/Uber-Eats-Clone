@@ -1,3 +1,5 @@
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import FoodBankIcon from '@mui/icons-material/FoodBank';
 // component
 import SvgColor from '../../../components/svg-color';
 
@@ -6,27 +8,22 @@ import SvgColor from '../../../components/svg-color';
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const navConfig = [
-  {
-    title: 'dashboard',
-    path: '/dashboard/app',
-    icon: icon('ic_analytics'),
-    protected: true
-  },
-  {
-    title: 'articles',
-    path: '/dashboard/article',
-    icon: icon('ic_admin'),
-  },
-  {
-    title: 'menus',
-    path: '/dashboard/menu',
-    icon: icon('ic_user'),
-  },
+  // {
+  //   title: 'dashboard',
+  //   path: '/dashboard/app',
+  //   icon: icon('ic_analytics'),
+  //   protected: true
+  // },
   {
     title: 'orders',
-    path: '/dashboard/orders',
+    path: '/dashboard/order',
     icon: icon('ic_cart'),
-  }
+  },
+  {
+    title: 'My Orders',
+    path: '/dashboard/myorder',
+    icon: icon('ic_cart'),
+  },
 ];
 
 export default navConfig;

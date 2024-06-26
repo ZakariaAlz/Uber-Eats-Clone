@@ -1,126 +1,125 @@
-import { useEffect, useState, useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 // @mui
-import { Grid, Container, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-
-// sections
-import { AppWidgetSummary } from '../sections/@dashboard/app';
-import { getClients } from '../api/client';
-import { getArticles } from '../api/article';
-import { getComponents } from '../api/component';
-import { getVersements } from '../api/versement';
-import { getTechnicalbyemail } from '../api/technical';
-
-
-import { AuthContext } from "../helpers/AuthContext";
-
+import { Grid, Container, Typography, Card, CardContent } from '@mui/material';
+// components
+import {
+  AppTasks,
+  AppNewsUpdate,
+  AppOrderTimeline,
+  AppCurrentVisits,
+  AppWebsiteVisits,
+  AppTrafficBySite,
+  AppWidgetSummary,
+  AppCurrentSubject,
+  AppConversionRates,
+} from '../sections/@dashboard/app';
+import Iconify from '../components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function DashboardAppPage() {
-  const [, setLoading] = useState(true);
-  const theme = useTheme();
-  const { authState } = useContext(AuthContext);
-  const userInfo = authState.userInfo;
+const microservices = [
+  { name: 'Technical', endpoint: 'technical-service' },
+  { name: 'Client', endpoint: 'client-service' },
+  { name: 'Restaurant', endpoint: 'restaurant-service' },
+  { name: 'Delivery', endpoint: 'delivery-service' },
+  { name: 'Component', endpoint: 'component-service' },
+  { name: 'Sales', endpoint: 'sales-service' },
+];
 
-  const [technical, setTechnical] = useState(null);
+const fetchPerformanceData = async (endpoint) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/${endpoint}/api/performance`, {
+      headers: {
+        accessToken: localStorage.getItem("accessToken"),
+        apikey: process.env.REACT_APP_API_KEY,
+      },
+    });
+    if (response.data.error) {
+      console.error(response.data.error);
+      return null;
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export default function DashboardAppPage() {
+  const theme = useTheme();
+  const [performanceData, setPerformanceData] = useState({});
 
   useEffect(() => {
-    if (userInfo && userInfo.email) {
-      getTechnicalbyemail(userInfo.email)
-        .then((res) => {
-          setTechnical(res.data);
-          console.log(res.data)
-          localStorage.setItem('technical', JSON.stringify(res.data)); // Store restaurant data in local storage
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching restaurant data:", error.response ? error.response.data : error.message);
-          setLoading(false);
+    const fetchData = async () => {
+      try {
+        const promises = microservices.map(async (service) => {
+          const data = await fetchPerformanceData(service.endpoint);
+          return { [service.name]: data };
         });
-    } else {
-      console.error("User info or user ID is not available.");
-      setLoading(false);
-    }
+
+        const results = await Promise.all(promises);
+        const data = results.reduce((acc, result) => ({ ...acc, ...result }), {});
+        setPerformanceData(data);
+      } catch (error) {
+        console.error('Error fetching performance data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
-
-
-
-
 
   return (
     <>
       <Helmet>
-        <title> Dashboard </title>
+        <title> Dashboard | Minimal UI </title>
       </Helmet>
-      <div>
-        <div>
-          <Typography variant="h3" sx={{ mb: 5 }}>
-            Welcome, {technical && technical.name}!
-          </Typography>
-          <Container maxWidth="xl">
-            <Typography variant="h4" sx={{ mb: 5 }}>
-              Statistiques
-            </Typography>
 
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6} md={3} >
-                <AppWidgetSummary title="Clients" color="info" icon={'mdi:user-group-outline'} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <AppWidgetSummary title="Produits" color="info" icon={'mdi:cart'} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3} >
-                <AppWidgetSummary title="Doit Total" color="info" icon={'ant-design:android-filled'} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={3} >
-                <AppWidgetSummary title="Versement Total" color="info" icon={'ant-design:android-filled'} />
-              </Grid>
+      <Container maxWidth="xl">
+        <Typography variant="h4" sx={{ mb: 5 }}>
+          Hi, Welcome back
+        </Typography>
 
-              <Grid item xs={12} >
-                <h3>Commandes d'achat(s) d'article(s) :</h3>
-              </Grid>
-
-              <Grid item xs={3} >
-                <AppWidgetSummary title="Nombre De Commandes" icon={'ant-design:windows-filled'} />
-              </Grid>
-
-              <Grid item xs={3} >
-                <AppWidgetSummary title="Commandes Payées" icon={'ant-design:windows-filled'} />
-              </Grid>
-
-              <Grid item xs={3} >
-                <AppWidgetSummary title="Total Revenu Commande D'Article" icon={'ant-design:windows-filled'} />
-              </Grid>
-
-              <Grid item xs={3} >
-                <AppWidgetSummary title="Net Revenu Commande D'Article" icon={'ant-design:windows-filled'} />
-              </Grid>
-
-              <Grid item xs={12} >
-                <h3>   Commandes de publicité :</h3>
-              </Grid>
-
-              <Grid item xs={3} >
-                <AppWidgetSummary title="Nombre De Commandes" icon={'ant-design:windows-filled'} />
-              </Grid>
-
-              <Grid item xs={3} >
-                <AppWidgetSummary title="Commandes Payées" icon={'ant-design:windows-filled'} />
-              </Grid>
-
-              <Grid item xs={3} >
-                <AppWidgetSummary title="Devis De Toutes Les Commandes De Pubilicités" icon={'ant-design:windows-filled'} />
-              </Grid>
-
-              <Grid item xs={3}>
-                <AppWidgetSummary title="Net Revenu Commandes De Pubilicités" icon={'ant-design:windows-filled'} />
-              </Grid>
+        <Grid container spacing={3}>
+          {microservices.map((service) => (
+            <Grid item xs={12} md={6} lg={4} key={service.name}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6">{service.name} Performance</Typography>
+                  {performanceData[service.name] ? (
+                    <>
+                      <AppCurrentVisits
+                        sx={{mb:1}}
+                        title={`Total RAM Usage: ${performanceData[service.name].ramUsage.total}`}
+                        chartData={[
+                          { label: `Used: ${performanceData[service.name].ramUsage.used}`, value: parseFloat(performanceData[service.name].ramUsage.used) },
+                          { label: `Free: ${performanceData[service.name].ramUsage.free}`, value: parseFloat(performanceData[service.name].ramUsage.free) },
+                        ]}
+                        chartColors={[
+                          theme.palette.warning.main,
+                          theme.palette.primary.main,
+                        ]}
+                      />
+                      <AppConversionRates
+                        title="CPU Usage (%)"
+                        subheader={`(${service.name})`}
+                        chartData={performanceData[service.name].cpuUsage.map((cpu, index) => ({
+                          label: Object.keys(cpu)[0],
+                          value: parseFloat(cpu[Object.keys(cpu)[0]].usage),
+                        }))}
+                      />
+                    </>
+                  ) : (
+                    <Typography variant="body2">Loading...</Typography>
+                  )}
+                </CardContent>
+              </Card>
             </Grid>
-          </Container>
-        </div>
-      </div>
+          ))}
+        </Grid>
+      </Container>
     </>
   );
 }

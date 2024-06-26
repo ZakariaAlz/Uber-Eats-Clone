@@ -10,16 +10,6 @@ const MenuSchema = new Schema({
     type: String,
     required: true
   },
-  articles: [{
-    article: {
-      type: Schema.Types.ObjectId,
-      ref: 'Article' // Reference to the Article model
-    },
-    name: String,
-    quantity: Number,
-    price: Number,
-    totalprice: Number
-  }],
   restaurant: {
     type: Schema.Types.ObjectId,
     ref: 'Restaurant' // Reference to the Restaurant model

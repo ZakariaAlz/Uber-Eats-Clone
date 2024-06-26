@@ -20,6 +20,8 @@ import UpdateMenu from "./pages/update-menu"
 
 import OrderPage from './pages/OrderPage';
 import UpdateOrder from "./pages/update-order"
+import CheckOrder from "./pages/check-order"
+
 
 import ProfilePage from './pages/ProfilePage';
 import SignUpPage from './pages/SignupPage';
@@ -50,6 +52,8 @@ export default function Router() {
 
         { path: 'order', element: <OrderPage /> },
         { path: 'update-order', element: <UpdateOrder /> },
+        { path: 'check-order', element: <CheckOrder /> },
+
 
       ],
     },

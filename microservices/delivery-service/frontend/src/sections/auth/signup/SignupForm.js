@@ -35,7 +35,7 @@ export default function SignupForm() {
             email: '',
             password: '',
             phonenumber: '',
-            adress: '',
+            vehicle: '',
             referralCodeused: '',
         },
         validationSchema: Yup.object({
@@ -43,7 +43,7 @@ export default function SignupForm() {
             email: Yup.string().email('Invalid email address').required('Email is required'),
             password: Yup.string().required('Password is required'),
             phonenumber: Yup.number().required('Phone number is required'),
-            adress: Yup.string().required('Address is required'),
+            vehicle: Yup.string().required('Vehicle is required'),
         }),
         onSubmit: (values) => {
             const apiKey = process.env.REACT_APP_API_KEY;
@@ -125,12 +125,12 @@ export default function SignupForm() {
                     />
 
                     <TextField
-                        name="adress"
-                        label="Address"
-                        value={formik.values.adress}
+                        name="vehicle"
+                        label="Vehicle"
+                        value={formik.values.vehicle}
                         onChange={formik.handleChange}
-                        error={formik.touched.adress && Boolean(formik.errors.adress)}
-                        helperText={formik.touched.adress && formik.errors.adress}
+                        error={formik.touched.vehicle && Boolean(formik.errors.vehicle)}
+                        helperText={formik.touched.vehicle && formik.errors.vehicle}
                     />
 
                     <TextField

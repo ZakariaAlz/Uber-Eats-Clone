@@ -5,7 +5,6 @@ class Restaurant {
 
     static async create(restaurant) {
 
-
         restaurant.password = await bcrypt.hash(restaurant.password, 10)
         const t = await RestaurantSchema.create(restaurant)
         return t
@@ -37,6 +36,11 @@ class Restaurant {
 
     static async findByEmail(email) {
         const t = await RestaurantSchema.findOne({ email: email }).exec()
+        return t
+    }
+    
+    static async findBySqlid(sqlId) {
+        const t = await RestaurantSchema.findOne({ sqlId: sqlId }).exec()
         return t
     }
 

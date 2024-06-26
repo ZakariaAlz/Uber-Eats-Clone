@@ -60,5 +60,15 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
+router.get("/finddeliverybyemail/:email", async (req, res) => {
+  try {
+      const {email} = req.params
+      const newDelivery = await Delivery.findByEmail(email)
+      res.status(200).send(newDelivery)
+  } catch (error) {
+      res.status(500).send(error)
+  }
+});
+
 
 module.exports = router;

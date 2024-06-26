@@ -10,6 +10,8 @@ const menu = require('./menu')
 const restaurant = require('./restaurant')
 const developer = require('./Developer')
 const component = require('./component')
+const log = require('./log')
+
 
 
 
@@ -29,6 +31,8 @@ router.use('/menu', menu)
 router.use('/restaurant', restaurant)
 router.use('/developer', developer)
 router.use('/component', component)
+router.use('/log', log)
+
 
 
 

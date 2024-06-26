@@ -114,7 +114,7 @@ router.get("/findcommandebydelivery/:deliveryId", async (req, res) => {
 });
 
 // Find a commande by client
-router.get("/findcommandebyclient/:restaurantId", async (req, res) => {
+router.get("/findcommandebyrestaurant/:restaurantId", async (req, res) => {
   try {
       const {restaurantId} = req.params
       const newCommande = await Commande.findByRestaurant(restaurantId)
