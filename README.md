@@ -11,12 +11,12 @@ Welcome to CESI-Eats, a cutting-edge distributed software platform tailored for 
 ## 🔍 Project Overview
 CESI-Eats caters to several distinct user profiles:
 
-**End-Users:** Manage their accounts, create and track orders, view order history, and refer friends.
-**Restaurators:** Oversee account management, item listings, menus, validate orders, and track deliveries.
-**Delivery Drivers**: Manage their accounts, accept delivery requests, sponsor other drivers, and receive notifications.
-**Third-Party Developers:** Access and download reusable components for integration and development.
-**Sales Department:** Handle customer accounts and utilize real-time order monitoring dashboards.
-**Technical Department:** Manage components, consult logs, and monitor server performance.
+**End-Users:** Manage their accounts, create and track orders, view order history, and refer friends. </br>
+**Restaurators:** Oversee account management, item listings, menus, validate orders, and track deliveries. </br>
+**Delivery Drivers**: Manage their accounts, accept delivery requests, sponsor other drivers, and receive notifications. </br>
+**Third-Party Developers:** Access and download reusable components for integration and development. </br>
+**Sales Department:** Handle customer accounts and utilize real-time order monitoring dashboards. </br>
+**Technical Department:** Manage components, consult logs, and monitor server performance.  </br>
 
 ## ⚙️ Installation and Setup
 To get started with CESI-Eats, follow these steps:
@@ -56,8 +56,9 @@ Click on the Code button and select Open with Codespaces, then click on New code
 Wait for the Setup:
 GitHub Codespaces will automatically set up the development environment. Once the setup is complete, you can start coding directly in the browser-based IDE.
 
-👥 Contributors
-Nabil TALEB 
+### 👥 Contributors 
+
+Nabil TALEB </br>
 Ali MAHDJOUB
 
 
@@ -85,5 +86,7 @@ WeDelivery harnesses the power of:
 ---
 
 Cesi Eats is committed to revolutionizing the delivery industry with technology. Thank you for being a part of our journey!
+
+Note: We have not pushed to the main branch yet, but this will be done soon.
 
 *Created by Zakaria Ali Zouaoui ❤️*
